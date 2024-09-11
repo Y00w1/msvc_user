@@ -11,6 +11,10 @@ import com.microservice.user.domain.ports.out.user.UserRepositoryPort;
 import com.microservice.user.domain.validations.UserValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * Use case implementation for creating a warehouse assistant user.
+ * This class handles the business logic for creating a new user with the role of warehouse assistant.
+ */
 public class CreateWarehouseAssistantUserUseCaseImpl implements CreateWarehouseAssistantUserUseCase {
     private final UserRepositoryPort userRepositoryPort;
     private final RoleRepositoryPort roleRepositoryPort;
@@ -26,6 +30,16 @@ public class CreateWarehouseAssistantUserUseCaseImpl implements CreateWarehouseA
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Creates a warehouse assistant user.
+     * This method validates the user, checks for uniqueness, sets the user's role, encrypts the password, and saves the user.
+     *
+     * @param user the user to create
+     * @return the created user
+     * @throws DuplicateEmailException if the email is already in use
+     * @throws DuplicateIdDocumentException if the ID document is already in use
+     * @throws RoleNotFoundException if the warehouse assistant role is not found
+     */
     @Override
     public User createWarehouseAssistantUser(User user) {
         userValidator.validate(user);
@@ -35,6 +49,14 @@ public class CreateWarehouseAssistantUserUseCaseImpl implements CreateWarehouseA
         return userRepositoryPort.createUser(user);
     }
 
+    /**
+     * Validates that the user is unique by checking email and ID document.
+     * This method queries the user repository to ensure that no other user exists with the same email or ID document.
+     *
+     * @param user the user to validate
+     * @throws DuplicateEmailException if the email is already in use
+     * @throws DuplicateIdDocumentException if the ID document is already in use
+     */
     private void validateUniqueUser(User user) {
         if (userRepositoryPort.findByEmail(user.getEmail()).isPresent()) {
             throw new DuplicateEmailException(user.getEmail());        }
@@ -43,11 +65,24 @@ public class CreateWarehouseAssistantUserUseCaseImpl implements CreateWarehouseA
         }
     }
 
+    /**
+     * Sets the role of the user to warehouse assistant.
+     * This method queries the role repository to find the warehouse assistant role and assigns it to the user.
+     *
+     * @param user the user to set the role for
+     * @throws RoleNotFoundException if the warehouse assistant role is not found
+     */
     private void setUserRole(User user){
         user.setRole(roleRepositoryPort.findRoleByName(RoleConstants.WAREHOUSE_ASSISTANT)
                 .orElseThrow(RoleNotFoundException::new));
     }
 
+    /**
+     * Encrypts the user's password.
+     * This method uses the password encoder to encrypt the user's password before saving it to the repository.
+     *
+     * @param user the user whose password to encrypt
+     */
     private void encryptPassword(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }

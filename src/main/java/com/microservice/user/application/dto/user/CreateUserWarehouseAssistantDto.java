@@ -18,6 +18,7 @@ public record CreateUserWarehouseAssistantDto(
         String lastName,
 
         @NotBlank(message = UserValidationMessages.ID_DOCUMENT_NOT_BLANK)
+        @Size(max = UserValidationConstants.ID_DOCUMENT_MAX_LENGTH, message = UserValidationMessages.ID_DOCUMENT_SIZE)
         @Pattern(regexp = UserValidationConstants.ID_DOCUMENT_REGEX, message = UserValidationMessages.ID_DOCUMENT_NUMERIC)
         String idDocument,
 

@@ -22,4 +22,5 @@ public class UserValidationMessages {
     public static final String PASSWORD_NOT_BLANK = "Password is required";
     public static final String PASSWORD_SIZE = "Password must be at least {min} characters long";
     public static final String PASSWORD_COMPLEXITY = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+    public static final String ID_DOCUMENT_SIZE = "ID document must not exceed {max} characters";
 }
