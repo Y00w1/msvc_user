@@ -1,4 +1,4 @@
-package com.microservice.user.application.dto.user;
+package com.microservice.user.application.dto.authentication;
 
 import com.microservice.user.application.constants.user.UserValidationConstants;
 import com.microservice.user.application.constants.user.UserValidationMessages;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-public record CreateUserDto(
+public record SignupReqDto(
         @NotBlank(message = UserValidationMessages.NAME_NOT_BLANK)
         @Size(min = UserValidationConstants.NAME_MIN_LENGTH, max = UserValidationConstants.NAME_MAX_LENGTH,
                 message = UserValidationMessages.NAME_SIZE)

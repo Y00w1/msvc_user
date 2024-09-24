@@ -1,6 +1,6 @@
 package com.microservice.user.infrastructure.controller;
 
-import com.microservice.user.application.dto.user.CreateUserWarehouseAssistantDto;
+import com.microservice.user.application.dto.user.CreateUserDto;
 import com.microservice.user.application.dto.user.UserDto;
 import com.microservice.user.application.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +31,7 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @PostMapping("/create/warehouse-assistant")
-    public ResponseEntity<UserDto> createWarehouseAssistant(@Valid @RequestBody CreateUserWarehouseAssistantDto createUserWarehouseAssistantDto) {
-        return ResponseEntity.ok(userService.createWarehouseAssistant(createUserWarehouseAssistantDto));
+    public ResponseEntity<UserDto> createWarehouseAssistant(@Valid @RequestBody CreateUserDto createUserDto) {
+        return ResponseEntity.ok(userService.createWarehouseAssistant(createUserDto));
     }
 }

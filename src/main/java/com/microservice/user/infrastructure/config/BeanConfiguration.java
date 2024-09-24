@@ -1,8 +1,12 @@
 package com.microservice.user.infrastructure.config;
 
+import com.microservice.user.domain.factory.UserFactoryImpl;
+import com.microservice.user.domain.ports.in.AuthenticationUseCase;
 import com.microservice.user.domain.ports.in.CreateWarehouseAssistantUserUseCase;
+import com.microservice.user.domain.ports.in.UserFactory;
 import com.microservice.user.domain.ports.out.role.RoleRepositoryPort;
 import com.microservice.user.domain.ports.out.user.UserRepositoryPort;
+import com.microservice.user.domain.usecases.AuthenticationUseCaseImpl;
 import com.microservice.user.domain.usecases.CreateWarehouseAssistantUserUseCaseImpl;
 import com.microservice.user.domain.validations.UserValidator;
 import lombok.AllArgsConstructor;
@@ -28,7 +32,17 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public CreateWarehouseAssistantUserUseCase createWarehouseAssistantUserUseCase(UserValidator userValidator) {
-        return new CreateWarehouseAssistantUserUseCaseImpl(userRepositoryPort, roleRepositoryPort, userValidator, passwordEncoder());
+    public UserFactory userFactory() {
+        return new UserFactoryImpl(userRepositoryPort, roleRepositoryPort, userValidator(), passwordEncoder());
+    }
+
+    @Bean
+    public CreateWarehouseAssistantUserUseCase createWarehouseAssistantUserUseCase() {
+        return new CreateWarehouseAssistantUserUseCaseImpl(userFactory());
+    }
+
+    @Bean
+    public AuthenticationUseCase authenticationUseCase(){
+        return new AuthenticationUseCaseImpl();
     }
 }
