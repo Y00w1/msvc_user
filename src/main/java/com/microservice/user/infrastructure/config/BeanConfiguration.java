@@ -33,12 +33,12 @@ public class BeanConfiguration {
 
     @Bean
     public UserFactory userFactory() {
-        return new UserFactoryImpl(userRepositoryPort, roleRepositoryPort, userValidator(), passwordEncoder());
+        return new UserFactoryImpl(roleRepositoryPort, passwordEncoder());
     }
 
     @Bean
     public CreateWarehouseAssistantUserUseCase createWarehouseAssistantUserUseCase() {
-        return new CreateWarehouseAssistantUserUseCaseImpl(userFactory());
+        return new CreateWarehouseAssistantUserUseCaseImpl(userFactory(), userRepositoryPort, userValidator());
     }
 
     @Bean

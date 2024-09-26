@@ -13,17 +13,12 @@ import com.microservice.user.domain.validations.UserValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserFactoryImpl implements UserFactory {
-    private final UserRepositoryPort userRepositoryPort;
     private final RoleRepositoryPort roleRepositoryPort;
-
-    private final UserValidator userValidator;
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserFactoryImpl(UserRepositoryPort userRepositoryPort, RoleRepositoryPort roleRepositoryPort, UserValidator userValidator, PasswordEncoder passwordEncoder) {
-        this.userRepositoryPort = userRepositoryPort;
+    public UserFactoryImpl(RoleRepositoryPort roleRepositoryPort, PasswordEncoder passwordEncoder) {
         this.roleRepositoryPort = roleRepositoryPort;
-        this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -39,27 +34,9 @@ public class UserFactoryImpl implements UserFactory {
 
     @Override
     public User createUser(User user, String roleName) {
-        userValidator.validate(user);
-        validateUniqueUser(user);
         setUserRole(user, roleName);
         encryptPassword(user);
-        return userRepositoryPort.createUser(user);
-    }
-
-    /**
-     * Validates that the user is unique by checking email and ID document.
-     * This method queries the user repository to ensure that no other user exists with the same email or ID document.
-     *
-     * @param user the user to validate
-     * @throws DuplicateEmailException if the email is already in use
-     * @throws DuplicateIdDocumentException if the ID document is already in use
-     */
-    private void validateUniqueUser(User user) {
-        if (userRepositoryPort.findByEmail(user.getEmail()).isPresent()) {
-            throw new DuplicateEmailException(user.getEmail());        }
-        if (userRepositoryPort.findByIdDocument(user.getIdDocument()).isPresent()) {
-            throw new DuplicateIdDocumentException(user.getIdDocument());
-        }
+        return user;
     }
 
     /**

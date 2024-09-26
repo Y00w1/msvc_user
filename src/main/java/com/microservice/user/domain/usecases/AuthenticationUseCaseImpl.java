@@ -7,9 +7,6 @@ import com.microservice.user.domain.ports.out.user.UserRepositoryPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class AuthenticationUseCaseImpl implements AuthenticationUseCase {
-    private final UserRepositoryPort userRepository;
-
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AuthResp login(String email, String password) {
